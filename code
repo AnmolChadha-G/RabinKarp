@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+int BASE=1000000;
+int RabinKarp(string pattern,string target)
+{
+	int m=pattern.length();
+	int power=1;
+	for(int i=0;i<m;i++){power=(power*31)%BASE;}
+	int hashcode=0,patcode=0;
+	for(int i=0;i<m;i++){patcode=(patcode*31+pattern[i])%BASE;}
+	for(int i=0;i<target.size();i++)
+	{
+		hashcode=(hashcode*31+target[i])%BASE;
+		//cout<<hashcode<<endl;
+		if(i<m-1){continue;}
+		else if(i>=m){hashcode=(hashcode-target[i-m]*power)%BASE;}
+		if(hashcode<0){hashcode+=BASE;}
+		if(hashcode==patcode)
+		{
+			if(target.substr(i-m+1,m)==pattern){return i-m+1;}
+		}
+	}
+	return -1;
+}
+int main()
+{
+	string a,b;
+	cin>>a>>b;
+	cout<<RabinKarp(a,b)<<endl;
+	return 0;
+}
